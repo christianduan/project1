@@ -90,18 +90,30 @@ void searchPuzzle(char** arr, char* word) {
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
-    word = cap(word);
+
+    // make copy of array to output position
+    int **arr_out = (int **)malloc(bSize * sizeof(int*));
+    for(int i = 0; i < bSize; i++){
+        *(arr_out + i) = (int*)malloc(bSize * sizeof(int));
+        for (int j = 0; j < bSize - 1; ++j){
+            *(*(arr_out + i)+j) = 0;
+        }
+    }   
     
+    // capitalize word
+    cap(word);
+    
+    // Find position of the letters in word
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
-            if(word[i] ==  j){
-                printf("%d ", word[i]);
-            }
-            else{
-                searchPuzzle(arr, word);
+            if(*(*(arr + i)+j) == *(word+i)){
+                *(*(arr_out+i)+j) = j;
+
+
             }
         }
     }
+
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
             printf("%c ", *(*(arr + i) + j));

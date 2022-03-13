@@ -60,7 +60,6 @@ void printPuzzle(char** arr) {
     // It must produce the output in the SAME format as the samples 
     // in the instructions.
     // Your implementation here...
-
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
             printf("%c ", *(*(arr + i) + j));
@@ -84,12 +83,39 @@ void cap(char* word){
     }
 }
 
+void findLetter(char** arr, char* word, int** arr_out, int i, int j, int tally){
+    if(*(*(arr + i)+j) == *(word+i) && *(*(arr_out + i)+j) == 0){
+        *(*(arr_out+i)+j) = tally + 1;
+            tally++;
+    }
+
+    else if(*(*(arr + i)+j) == *(word+i) && *(*(arr_out + i)+j) > 0){
+        int temp = *(*(arr_out+i)+j);
+        int new = (tally+1);
+        do{
+            temp = temp/10;
+            new = new*10;
+        }
+        while (temp > 0);
+
+        int input = new + *(*(arr_out+i)+j);
+
+        *(*(arr_out+i)+j) = input;
+
+        tally++;
+    }
+}
+
 void searchPuzzle(char** arr, char* word) {
     // This function checks if arr contains the search word. If the 
     // word appears in arr, it will print out a message and the path 
     // as shown in the sample runs. If not found, it will print a 
     // different message as shown in the sample runs.
     // Your implementation here...
+
+    int tally = 0;
+
+    word_size(word);
 
     // make copy of array to output position
     int **arr_out = (int **)malloc(bSize * sizeof(int*));
@@ -103,20 +129,28 @@ void searchPuzzle(char** arr, char* word) {
     // capitalize word
     cap(word);
     
-    // Find position of the letters in word
+    // find poition of the letters in word
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
             if(*(*(arr + i)+j) == *(word+i)){
-                *(*(arr_out+i)+j) = j;
+                findLetter(arr, word, arr_out, i, j, tally);
 
+                do{
 
+                }
+                while (*(word+tally) < wSize);
+            }
+
+            else{
+                printf("Word not found!");
             }
         }
     }
+   
 
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
-            printf("%c ", *(*(arr + i) + j));
+            printf("%c ", *(*(arr_out + i) + j));
         }
         printf("\n");
     }

@@ -120,11 +120,12 @@ void searchPuzzle(char** arr, char* word) {
     // Your implementation here...
 
     int tally = 0;
+
     bool found = false;
 
     word_size(word);
-
-    // Make copy of array to output position
+ 
+    // make copy of array to output position
     int **arr_out = (int **)malloc(bSize * sizeof(int*));
     for(int i = 0; i < bSize; i++){
         *(arr_out + i) = (int*)malloc(bSize * sizeof(int));
@@ -133,55 +134,80 @@ void searchPuzzle(char** arr, char* word) {
         }
     }   
     
-    // Capitalize word
+    // capitalize word
     cap(word);
     
-    // Find position of the letters in word
+    // find position of the letters in word
     for(int i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
-            if(*(*(arr + i)+j) == *(word+i)){
+            if(*(*(arr + i)+j) == *(word+tally)){
                 found = true;
                 findLetter(arr, word, arr_out, i, j, tally);
 
-                do{
-                    if(*(*(arr + i - 1) + j - 1) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+                if(*(word+tally) < wSize){
+                    if (i > 0 && j > 0){
+                        if(*(*(arr + i-1)+j-1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i-1, j-1, tally+1);
+                        }
                     }
-                    if(*(*(arr + i) + j) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+
+                    if (i > 0){
+                        if(*(*(arr + i-1)+j) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i-1, j, tally+1);
+                        }
                     }
-                    if(*(*(arr + i + 1) + j - 1) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+                   
+                    if (i > 0 && j < bSize - 1){
+                        if(*(*(arr + i-1)+j+1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i-1, j+1, tally+1);
+                        }
                     }
-                    if(*(*(arr + i + 1) + j + 1) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+                    
+                    if(j > 0){
+                        if(*(*(arr + i)+j-1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i, j-1, tally+1);
+                        }
                     }
-                    if(*(*(arr + i - 1) + j) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+
+                    
+                    if (j < bSize - 1){
+                        if(*(*(arr + i)+j+1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i, j+1, tally+1);
+                        }
                     }
-                    if(*(*(arr + i) + j - 1) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+                    
+                    if (i < bSize && j > 0){
+                        if(*(*(arr + i+1)+j-1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i+1, j-1, tally+1);
+                        }
                     }
-                    if(*(*(arr + i - 1) + j + 1) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
-                    }   
-                    if(*(*(arr + i + 1) + j) == *(word + tally)){
-                        findLetter(arr, word, arr_out, i, j, tally);
+                    
+                    if (i < bSize-1){
+                        if(*(*(arr + i+1)+j) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i+1, j, tally+1);
+                        }
+                    }
+                    
+                    if (i < bSize-1 && j < bSize-1){
+                        if(*(*(arr + i+1)+j+1) == *(word+tally)){
+                            findLetter(arr, word, arr_out, i+1, j+1, tally+1);
+                        }
                     }
                 }
-                while (*(word+tally) < wSize);
-            }
-
-            else if(found == false){
-                printf("Word not found!");
             }
         }
     }
+
+    if (found == false){
+        printf("Word not found!");
+    }
    
-    if(found == true){
+    if (found == true){
+        printf("Word found!\n");
+        printf("Printing results: \n");
         for(int i = 0; i < bSize; i++){
             for(int j = 0; j < bSize; j++){
-                printf("%c ", *(*(arr_out + i) + j));
+                printf("%i ", *(*(arr_out + i) + j));
             }
             printf("\n");
         }

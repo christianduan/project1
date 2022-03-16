@@ -8,7 +8,7 @@
 void printPuzzle(char** arr);
 void searchPuzzle(char** arr, char* word);
 int bSize;
-int wSize = 0;
+int wSize;
 
 // Main function, DO NOT MODIFY 	
 int main(int argc, char **argv) {
@@ -85,31 +85,68 @@ void cap(char* word){
     }
 }
 
-void findLetter(char** arr, char* word, int** arr_out, int i, int j, int tally){
-    if(*(*(arr + i)+j) == *(word+i) && *(*(arr_out + i)+j) == 0){
-        *(*(arr_out+i)+j) = tally + 1;
+bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize){
+    int wordIndex = bSize - 1;
+    if(i > wordIndex || j > wordIndex){
+        return false;
+    }
+
+    if(*(word + tally) != *(*(arr + i) + j)){
+        return false;
+    }
+
+    if(wSize == tally + 1){
+        return true;
+    }
+
+    if(i > 0){
+        if(findLetter(arr, word, tally + 1, i - 1, j, bSize)){
             tally++;
-    }
-
-    else if(*(*(arr + i)+j) == *(word+i) && *(*(arr_out + i)+j) > 0){
-        int temp = *(*(arr_out+i)+j);
-        int new = (tally+1);
-        do{
-            temp = temp/10;
-            new = new*10;
+            return true;
         }
-        while (temp > 0);
-
-        int input = new + *(*(arr_out+i)+j);
-
-        *(*(arr_out+i)+j) = input;
-
-        tally++;
     }
-}
-
-void backTrace(){
-    
+    if(i > 0 && j > 0){
+        if(findLetter(arr, word, tally + 1, i - 1, j - 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(j < wordIndex){
+         if(findLetter(arr, word, tally + 1, i, j - 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(j > 0 && i < wordIndex){
+         if(findLetter(arr, word, tally + 1, i + 1, j - 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(i < wordIndex){
+         if(findLetter(arr, word, tally + 1, i + 1, j, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(i > 0 && j > 0){
+         if(findLetter(arr, word, tally + 1, i - 1, j + 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(j > 0){
+         if(findLetter(arr, word, tally + 1, i, j + 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
+    if(j > 0 && i < wordIndex){
+         if(findLetter(arr, word, tally + 1, i + 1, j + 1, bSize)){
+            tally++;
+            return true;
+        }
+    }
 }
 
 void searchPuzzle(char** arr, char* word) {
@@ -138,61 +175,14 @@ void searchPuzzle(char** arr, char* word) {
     cap(word);
     
     // find position of the letters in word
-    for(int i = 0; i < bSize; i++){
+    for(int  i = 0; i < bSize; i++){
         for(int j = 0; j < bSize; j++){
             if(*(*(arr + i)+j) == *(word+tally)){
-                found = true;
-                findLetter(arr, word, arr_out, i, j, tally);
-
-                if(*(word+tally) < wSize){
-                    if (i > 0 && j > 0){
-                        if(*(*(arr + i-1)+j-1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i-1, j-1, tally+1);
-                        }
-                    }
-
-                    if (i > 0){
-                        if(*(*(arr + i-1)+j) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i-1, j, tally+1);
-                        }
-                    }
-                   
-                    if (i > 0 && j < bSize - 1){
-                        if(*(*(arr + i-1)+j+1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i-1, j+1, tally+1);
-                        }
-                    }
-                    
-                    if(j > 0){
-                        if(*(*(arr + i)+j-1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i, j-1, tally+1);
-                        }
-                    }
-
-                    
-                    if (j < bSize - 1){
-                        if(*(*(arr + i)+j+1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i, j+1, tally+1);
-                        }
-                    }
-                    
-                    if (i < bSize && j > 0){
-                        if(*(*(arr + i+1)+j-1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i+1, j-1, tally+1);
-                        }
-                    }
-                    
-                    if (i < bSize-1){
-                        if(*(*(arr + i+1)+j) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i+1, j, tally+1);
-                        }
-                    }
-                    
-                    if (i < bSize-1 && j < bSize-1){
-                        if(*(*(arr + i+1)+j+1) == *(word+tally)){
-                            findLetter(arr, word, arr_out, i+1, j+1, tally+1);
-                        }
-                    }
+                if(findLetter(arr, word, 0, i, j, bSize) == true){
+                    found = true;
+                }
+                else{
+                    found = false;
                 }
             }
         }

@@ -205,8 +205,16 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
     }
 }
 
-void findWord(char** arr, char* word, int bSize, int** arr_out){
-
+void printOut(int** arr_out){
+    printf("Word found!\n");
+    printf("Printing results: \n");
+    for(int i = 0; i < bSize; i++){
+        for(int j = 0; j < bSize; j++){
+            printf("%i ", *(*(arr_out + i) + j));
+            printf("\t");
+        }
+        printf("\n");
+    }
 }
 
 void searchPuzzle(char** arr, char* word) {
@@ -253,14 +261,6 @@ void searchPuzzle(char** arr, char* word) {
     }
    
     if (found == true){
-        printf("Word found!\n");
-        printf("Printing results: \n");
-        for(int i = 0; i < bSize; i++){
-            for(int j = 0; j < bSize; j++){
-                printf("%i ", *(*(arr_out + i) + j));
-            }
-            printf("\n");
-        }
-        printf("\n");
+        printOut(arr_out);
     }
 }

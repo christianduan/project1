@@ -71,12 +71,14 @@ void printPuzzle(char** arr) {
     printf("\n");
 }
 
+// Obtains size of word
 void word_size(char* word){
     while(*(word + wSize) != '\0'){
         wSize++;
     }
 }
 
+// Capitalizes any lowercase letters
 void cap(char* word){
     for(int i = 0; i < wSize; i++){
         if(*(word + i) >= 'a' && *(word + i) <= 'z'){
@@ -85,6 +87,7 @@ void cap(char* word){
     }
 }
 
+// Concatenates repeating path to repeated letters
 int concate(int** arr_out, int tally, int i, int j){
     int temp = *(*(arr_out+i)+j);
     int new = (tally+1);
@@ -100,7 +103,7 @@ int concate(int** arr_out, int tally, int i, int j){
 
     tally++;
 }
-
+// Creates a bool value that is used to determine if the word is found
 bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int** arr_out){
     int wordIndex = bSize - 1;
     if(i > wordIndex || j > wordIndex){
@@ -204,7 +207,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
         }
     }
 }
-
+// Function to print out the final array
 void printOut(int** arr_out){
     printf("Word found!\n");
     printf("Printing results: \n");
@@ -230,7 +233,7 @@ void searchPuzzle(char** arr, char* word) {
 
     word_size(word);
  
-    // make copy of array to output position
+    // Make copy of array to output position of word's letters
     int **arr_out = (int **)malloc(bSize * sizeof(int*));
     for(int i = 0; i < bSize; i++){
         *(arr_out + i) = (int*)malloc(bSize * sizeof(int));
@@ -239,7 +242,7 @@ void searchPuzzle(char** arr, char* word) {
         }
     }   
     
-    // capitalize word
+    // Capitalizes word
     cap(word);
     
     // find position of the letters in word

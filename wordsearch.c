@@ -119,96 +119,28 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
         return false;
     }
 
+    for(int x = i - 1; x <= i + 1 && x < bSize; x++){
+        if(x < 0){
+            x = 0;
+        }
+        for(int y = j - 1; y <= j + 1 && y < bSize; y++){
+            if(y < 0){
+                y = 0;
+            }
 
-    if(i > 0){
-        if(findLetter(arr, word, tally + 1, i - 1, j, bSize, arr_out) == true){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
+            if(findLetter(arr, word, tally + 1, i, j, bSize, arr_out) == true){
+                if(*(*(arr_out + i) + j) == 0){
+                    *(*(arr_out + i) + j) = tally + 1;
+                }
+                else{
+                    *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
+                }
+                return true;
             }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(i > 0 && j > 0){
-        if(findLetter(arr, word, tally + 1, i - 1, j - 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(j < 0){
-         if(findLetter(arr, word, tally + 1, i, j - 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(j > 0 && i < 0){
-         if(findLetter(arr, word, tally + 1, i + 1, j - 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(i < 0){
-         if(findLetter(arr, word, tally + 1, i + 1, j, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(i < 0 && j < 0){
-         if(findLetter(arr, word, tally + 1, i - 1, j + 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(j > 0){
-         if(findLetter(arr, word, tally + 1, i, j + 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
-        }
-    }
-    if(j > 0 && i < 0){
-         if(findLetter(arr, word, tally + 1, i + 1, j + 1, bSize, arr_out)){
-            if(*(*(arr_out + i) + j) == 0){
-                *(*(arr_out + i) + j) = tally + 1;
-            }
-            else{
-                *(*(arr_out + i) + j) = concate(arr_out, tally, i, j);
-            }
-            return true;
         }
     }
 }
+
 // Function to print out the final array
 void printOut(int** arr_out){
     printf("Word found!\n");

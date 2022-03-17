@@ -106,6 +106,11 @@ int concate(int** arr_out, int tally, int i, int j){
 // Creates a bool value that is used to determine if the word is found
 bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int** arr_out){
     int wordIndex = bSize - 1;
+
+    if(wSize == tally){
+        return true;
+    }
+
     if(i > wordIndex || j > wordIndex){
         return false;
     }
@@ -114,9 +119,6 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
         return false;
     }
 
-    if(wSize == tally + 1){
-        return true;
-    }
 
     if(i > 0){
         if(findLetter(arr, word, tally + 1, i - 1, j, bSize, arr_out) == true){
@@ -140,7 +142,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
             return true;
         }
     }
-    if(j < wordIndex){
+    if(j < 0){
          if(findLetter(arr, word, tally + 1, i, j - 1, bSize, arr_out)){
             if(*(*(arr_out + i) + j) == 0){
                 *(*(arr_out + i) + j) = tally + 1;
@@ -151,7 +153,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
             return true;
         }
     }
-    if(j > 0 && i < wordIndex){
+    if(j > 0 && i < 0){
          if(findLetter(arr, word, tally + 1, i + 1, j - 1, bSize, arr_out)){
             if(*(*(arr_out + i) + j) == 0){
                 *(*(arr_out + i) + j) = tally + 1;
@@ -162,7 +164,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
             return true;
         }
     }
-    if(i < wordIndex){
+    if(i < 0){
          if(findLetter(arr, word, tally + 1, i + 1, j, bSize, arr_out)){
             if(*(*(arr_out + i) + j) == 0){
                 *(*(arr_out + i) + j) = tally + 1;
@@ -173,7 +175,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
             return true;
         }
     }
-    if(i > 0 && j > 0){
+    if(i < 0 && j < 0){
          if(findLetter(arr, word, tally + 1, i - 1, j + 1, bSize, arr_out)){
             if(*(*(arr_out + i) + j) == 0){
                 *(*(arr_out + i) + j) = tally + 1;
@@ -195,7 +197,7 @@ bool findLetter(char** arr, char* word, int tally, int i, int j, int bSize, int*
             return true;
         }
     }
-    if(j > 0 && i < wordIndex){
+    if(j > 0 && i < 0){
          if(findLetter(arr, word, tally + 1, i + 1, j + 1, bSize, arr_out)){
             if(*(*(arr_out + i) + j) == 0){
                 *(*(arr_out + i) + j) = tally + 1;
@@ -237,7 +239,7 @@ void searchPuzzle(char** arr, char* word) {
     int **arr_out = (int **)malloc(bSize * sizeof(int*));
     for(int i = 0; i < bSize; i++){
         *(arr_out + i) = (int*)malloc(bSize * sizeof(int));
-        for (int j = 0; j < bSize - 1; ++j){
+        for (int j = 0; j < bSize; ++j){
             *(*(arr_out + i)+j) = 0;
         }
     }   
